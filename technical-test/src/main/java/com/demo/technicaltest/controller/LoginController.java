@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.demo.technicaltest.dto.RegisterDto;
 import com.demo.technicaltest.dto.LoginDto;
-import com.demo.technicaltest.entity.UserEntity;
 import com.demo.technicaltest.services.UserService;
 import com.demo.technicaltest.security.JwtUtil;
 
@@ -52,7 +51,7 @@ public class LoginController {
         if (authentication.isAuthenticated()) {
             String token = jwtUtil.generateToken(request.getUsername());
             return ResponseEntity.ok().body(
-                java.util.Map.of("token", token)  // ✅ ahora devuelve un JSON
+                java.util.Map.of("token", token)  
             );
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)

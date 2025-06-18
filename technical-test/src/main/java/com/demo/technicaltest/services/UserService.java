@@ -18,7 +18,7 @@ public class UserService {
         String username = request.getUsername();
         String rawPassword = request.getPassword();
 
-        // Validaciones básicas
+        
         if (username == null || username.isBlank()) {
             throw new IllegalArgumentException("El nombre de usuario no puede estar vacío");
         }
