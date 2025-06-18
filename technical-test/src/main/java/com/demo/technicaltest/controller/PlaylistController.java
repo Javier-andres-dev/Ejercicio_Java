@@ -1,5 +1,6 @@
 package com.demo.technicaltest.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import com.demo.technicaltest.services.PlayListService;
@@ -15,7 +16,7 @@ import com.demo.technicaltest.entity.PlaylistEntity;
 
 
 
-
+import java.util.Optional;
 import java.net.URI;
 import java.util.List;
 
@@ -33,21 +34,24 @@ public class PlaylistController {
     }
 
     
-    @GetMapping("/{nombre}")
-    public ResponseEntity<?> getPlaylist(@PathVariable String nombre) {
-        return playListService.getByName(nombre)
+    @GetMapping("/{listName}")
+    public ResponseEntity<?> getPlaylist(@PathVariable String listName) {
+        return playListService.getByName(listName)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     
-    @DeleteMapping("/{nombre}")
-    public ResponseEntity<?> deletePlaylist(@PathVariable String nombre) {
-        if (playListService.getByName(nombre).isEmpty()) {
-            return ResponseEntity.notFound().build();
+    @DeleteMapping("/{listName}")
+    public ResponseEntity<Void> deletePlaylist(@PathVariable String listName) {
+        Optional<PlaylistEntity> existing = playListService.getByName(listName);
+        
+        if (existing.isEmpty()) {
+            return ResponseEntity.notFound().build(); // 404 Not Found
         }
-        playListService.deleteByName(nombre);
-        return ResponseEntity.noContent().build();
+
+        playListService.deleteByName(listName);
+        return ResponseEntity.noContent().build(); // 204 No Content
     }
 
     @PostMapping

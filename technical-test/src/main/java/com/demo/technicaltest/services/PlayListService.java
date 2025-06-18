@@ -2,10 +2,8 @@ package com.demo.technicaltest.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.demo.technicaltest.repository.SongRepository;
 import com.demo.technicaltest.repository.PlaylistRepository;
 import com.demo.technicaltest.entity.PlaylistEntity;
-import com.demo.technicaltest.entity.SongEntity;
 
 import java.util.List;
 import java.util.Optional;
