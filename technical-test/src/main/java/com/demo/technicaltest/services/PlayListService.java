@@ -2,8 +2,11 @@ package com.demo.technicaltest.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.demo.technicaltest.repository.SongRepository;
 import com.demo.technicaltest.repository.PlaylistRepository;
 import com.demo.technicaltest.entity.PlaylistEntity;
+import com.demo.technicaltest.entity.SongEntity;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -11,8 +14,10 @@ import java.util.Optional;
 
 @Service
 public class PlayListService {
+
     @Autowired
     private PlaylistRepository playlistRepository;
+
     
     public List<PlaylistEntity> getAll() {
         return playlistRepository.findAll();
@@ -25,6 +30,7 @@ public class PlayListService {
     public void deleteByName(String nombre) {
         playlistRepository.deleteById(nombre);
     }
+
 
     public PlaylistEntity createPlayList(PlaylistEntity playlist) {
     
@@ -44,4 +50,5 @@ public class PlayListService {
         PlaylistEntity newPlayList = playlistRepository.save(playlist);
         return newPlayList;
     }
+
 }
