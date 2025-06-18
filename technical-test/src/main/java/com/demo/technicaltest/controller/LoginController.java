@@ -14,6 +14,9 @@ import com.demo.technicaltest.dto.LoginDto;
 import com.demo.technicaltest.entity.UserEntity;
 import com.demo.technicaltest.services.UserService;
 import com.demo.technicaltest.security.JwtUtil;
+
+
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/public")
 public class LoginController {
@@ -28,13 +31,16 @@ public class LoginController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/register")
-    public ResponseEntity<UserEntity> registerUser(@RequestBody RegisterDto request) {
-        UserEntity newUser = userService.registerUser(request);
-        return ResponseEntity.ok(newUser);
+    public ResponseEntity<?> registerUser(@RequestBody RegisterDto request) {
+        userService.registerUser(request);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(java.util.Map.of("message", "Usuario creado exitosamente"));
     }
 
+
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto request) {
+    public ResponseEntity<?> login(@RequestBody LoginDto request) {
     try {
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
@@ -45,13 +51,18 @@ public class LoginController {
 
         if (authentication.isAuthenticated()) {
             String token = jwtUtil.generateToken(request.getUsername());
-            return ResponseEntity.ok(token);
+            return ResponseEntity.ok().body(
+                java.util.Map.of("token", token)  // ✅ ahora devuelve un JSON
+            );
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                 .body(java.util.Map.of("message", "Credenciales inválidas"));
         }
 
     } catch (AuthenticationException e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                             .body(java.util.Map.of("message", "Credenciales incorrectas"));
     }
     }
+
 }
